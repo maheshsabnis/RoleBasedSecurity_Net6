@@ -1,0 +1,83 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@using SharedModels.Models;
+@using System.Text.Json;
+@inject Blazor_ClientApp.ClientCaller.SecurityProxy securityService;
+@inject IJSRuntime js; 
+ 
+<div>
+    <AuthorizeView>
+        <Authorized>
+            <h1>Your Dashboard - Your Claims</h1>
+           @* <div>
+                <button type="button" class="btn btn-primary" @onclick="Logout">Logout</button>
+            </div>*@
+           @* <div>
+                @foreach (var claim in userClaim)
+                {
+                    <div>@claim.Type - @claim.Value</div>
+                }
+            </div>*@
+            <br/>
+           
+            <AdminComponent/>
+             
+        </Authorized>
+        <NotAuthorized>
+            
+            <h1>Please Login</h1>
+            <div class="container">
+                 
+                    <div class="form-group">
+                        <label for="inputEmail">Email Address</label>
+                        <input type="text"  class="form-control" @bind="@loginUser.UserName"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword">Password</label>
+                         <input type="Password" class="form-control" @bind="@loginUser.Password"/>
+                    </div>
+                    <button type="button" class="btn btn-primary" @onclick="Login">Login</button>
+                  
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+    <hr/>
+    <a href="registeruser">Register New User</a>
+</div>
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState>? authState { get; set; }
+    private IList<Claim> userClaim
+    {
+        get
+        {
+            var auth = authState?.Result;
+            if (auth.User.Identity.IsAuthenticated)
+            {
+                return auth.User.Claims.ToList();
+            }
+            return new List<Claim>();
+        }
+    }
+    private LoginUser loginUser;
+    private ResponseStatus Response;
+
+    protected override void OnInitialized()
+    {
+        loginUser = new LoginUser();
+    }
+
+    private async Task Login()
+    {
+       // await js.InvokeVoidAsync("alert", JsonSerializer.Serialize(loginUser));
+          Response =  await securityService.AuthenticateUserAsync(loginUser);
+        
+    }
+
+    private async void Logout()
+    {
+        var Response = await securityService.LogoutAsync();
+    }
+ }

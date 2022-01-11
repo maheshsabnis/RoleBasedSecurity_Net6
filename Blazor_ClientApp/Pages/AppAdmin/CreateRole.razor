@@ -1,0 +1,40 @@
+﻿@page "/createrole"
+@using SharedModels.Models;
+<h3>Create New Role</h3>
+
+<EditForm Model="@role" OnValidSubmit="@CreateNewRole">
+    <div class="container">
+        <div class="form-group">
+            <label>Role Name</label>
+            <InputText class="form-control" @bind-Value="@role.Name"></InputText>
+        </div>
+
+         <div class="form-group">
+            <label>Normalized Name</label>
+            <InputText class="form-control" @bind-Value="@role.NormalizedName"></InputText>
+        </div>
+
+         
+
+        <div class="btn-group">
+            <input type="submit" class="btn btn-success" />
+            <input type="reset" class="btn btn-warning" />
+        </div>
+    </div>
+</EditForm>
+
+
+@code {
+    private ApplicationRole? role;
+
+    protected override Task OnInitializedAsync()
+    {
+        role = new ApplicationRole();
+        return base.OnInitializedAsync();
+    }
+
+    private async Task CreateNewRole()
+    {
+        
+    }
+}

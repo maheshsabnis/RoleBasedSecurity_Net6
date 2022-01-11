@@ -1,0 +1,38 @@
+﻿@page "/assignroletouser"
+@using SharedModels.Models;
+<h3>Assign Role To User</h3>
+
+<EditForm Model="@userInRole" OnValidSubmit="@AssignRoleToUser">
+    <div class="container">
+        <div class="form-group">
+            <label>Role Name</label>
+            <InputSelect class="form-control" @bind-Value="@userInRole.RoleName"></InputSelect>
+        </div>
+
+         <div class="form-group">
+            <label>User Name</label>
+            <InputSelect class="form-control" @bind-Value="@userInRole.UserName"></InputSelect>
+        </div>
+
+        <div class="btn-group">
+            <input type="submit" class="btn btn-success" />
+            <input type="reset" class="btn btn-warning" />
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    private UserRole? userInRole;
+
+    protected override Task OnInitializedAsync()
+    {
+        userInRole = new UserRole();
+        return base.OnInitializedAsync();
+    }
+
+    private async Task AssignRoleToUser()
+    {
+        
+    }
+
+}

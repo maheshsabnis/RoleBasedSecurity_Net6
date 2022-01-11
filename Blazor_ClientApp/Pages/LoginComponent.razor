@@ -1,0 +1,61 @@
+﻿@page "/login"
+@using SharedModels.Models
+@inject NavigationManager uriHelper;
+@inject Blazor_ClientApp.ClientCaller.SecurityProxy securityProxy;
+
+<h3>Login Form</h3>
+<EditForm Model="@loginUser" OnValidSubmit="@Login">
+    <div class="container">
+        <div class="form-group">
+            <label>User Name</label>
+            <InputText class="form-control" @bind-Value="@loginUser.UserName"></InputText>
+        </div>
+
+         <div class="form-group">
+            <label>Password</label>
+            <InputText type="Password" class="form-control" @bind-Value="@loginUser.Password"></InputText>
+        </div>
+
+        <div class="btn-group">
+            <input type="submit" class="btn btn-success" />
+            <input type="reset" class="btn btn-warning" />
+        </div>
+        <hr/>
+        <div>
+            <strong>
+                @status
+            </strong>
+        </div>
+        <hr/>
+         <a href="registeruser">Register New User</a>
+    </div>
+</EditForm>
+
+@code {
+    private LoginUser? loginUser;
+    private string? status = String.Empty;
+    private ResponseStatus? responseStatus;
+    protected override void OnInitialized()
+    {
+        loginUser = new LoginUser();
+        base.OnInitialized();
+    }
+
+    private async Task Login()
+    {
+        try
+        {
+            responseStatus = await securityProxy.AuthenticateUserAsync(loginUser);
+            status = responseStatus.Message;
+            uriHelper.NavigateTo("/adminView");
+        }
+        catch (Exception ex)
+        {
+            status = ex.Message;
+        }
+
+    }
+
+
+
+}

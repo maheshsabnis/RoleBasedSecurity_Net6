@@ -1,0 +1,36 @@
+﻿@page "/adminView"
+@inherits LayoutComponentBase
+@inject NavigationManager uriHelper;
+@using Blazor_ClientApp.StateStore;
+
+
+ 
+
+<div class="container">
+    @*<div class="align-content-end">
+        <LogoutComponent/>
+    </div>*@
+    <table class="table table-bordered table-striped">
+        <tr>
+            <td>
+                 <NavLink class="nav-link" href="createrole">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Create Role
+                </NavLink>
+            </td>
+            <td>
+                 <NavLink class="nav-link" href="assignroletouser">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Assign Role to User
+                </NavLink>
+            </td>
+        </tr>
+    </table>
+    <hr/>
+      <article class="content px-4">
+            @Body
+        </article>
+</div>                
+            
+
+@code {
+
+}

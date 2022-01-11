@@ -1,0 +1,12 @@
+﻿@inject Blazor_ClientApp.ClientCaller.SecurityProxy securityService;
+@inject NavigationManager navigate; 
+<div>
+                <button type="button" class="btn btn-primary" @onclick="Logout">Logout</button>
+            </div>
+@code {
+    private async void Logout()
+    {
+        var Response = await securityService.LogoutAsync();
+        navigate.NavigateTo("/");
+    }
+}
